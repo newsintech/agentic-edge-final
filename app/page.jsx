@@ -21,27 +21,33 @@ export default function Home() {
         }
       />
       
-      {/* MONETIZATION SECTION - Coming Next */}
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '40px auto', 
-        padding: '0 20px' 
-      }}>
-        <h2 style={{ 
-          textAlign: 'center', 
-          marginBottom: '30px',
-          color: '#333'
-        }}>
-          💰 Monetization Module (Next Step)
-        </h2>
-        <p style={{ 
-          textAlign: 'center', 
-          color: '#666',
-          marginBottom: '40px'
-        }}>
-          Amazon affiliate products will appear here
-        </p>
-      </div>
+           {/* MONETIZATION MODULE - Isolated Money Maker */}
+      <ModuleLoader 
+        moduleName="02-monetization/affiliate.jsx"
+        fallback={
+          <div style={{ 
+            maxWidth: '1200px', 
+            margin: '40px auto', 
+            padding: '0 20px',
+            textAlign: 'center'
+          }}>
+            <h2 style={{ 
+              textAlign: 'center', 
+              marginBottom: '30px',
+              color: '#333'
+            }}>
+              💰 Loading Money-Making Module...
+            </h2>
+            <p style={{ 
+              textAlign: 'center', 
+              color: '#666',
+              marginBottom: '40px'
+            }}>
+              Amazon affiliate products will appear here shortly
+            </p>
+          </div>
+        }
+      />
       
       {/* BENCHMARKS SECTION - Coming Later */}
       <div style={{ 
