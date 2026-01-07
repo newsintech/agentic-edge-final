@@ -14,7 +14,7 @@ export default function MonetizationModule() {
       price: "$599",
       originalPrice: "$699",
       discount: "14%",
-      affiliateLink: `https://www.amazon.com/dp/B0C4N5PJVC?tag=${https://amzn.to/4qCiGp7}`,
+      affiliateLink: `https://www.amazon.com/dp/B0C4N5PJVC?tag=${YOUR_AFFILIATE_TAG}`,
       image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
       rating: 4.8,
       features: ["16 Cores", "5.7GHz Boost", "AI Acceleration"],
