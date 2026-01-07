@@ -36,7 +36,7 @@ export default function Home() {
               marginBottom: '30px',
               color: '#333'
             }}>
-              💰 Loading Money-Making Module...
+                          🔒 Loading Hardware Recommendations...
             </h2>
             <p style={{ 
               textAlign: 'center', 
