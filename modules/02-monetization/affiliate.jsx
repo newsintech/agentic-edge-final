@@ -1,33 +1,34 @@
 'use client';
 
-export default function AffiliateModule() {
+export default function AffiliateModule({ country }) {
   const products = [
-    {
-      name: 'NVIDIA RTX 3060 12GB',
-      asin: 'B09K1F2K2P',
-      price: '₹34,900',
-      reason: 'Best value GPU for local AI & Stable Diffusion'
-    },
-    {
-      name: 'AMD Ryzen 9 5900X',
-      asin: 'B08164VTWH',
-      price: '₹31,469',
-      reason: 'Excellent CPU for AI workloads & multitasking'
-    },
-    {
-      name: 'Corsair 32GB DDR4 RAM',
-      asin: 'B081XWLQKS',
-      price: '₹23,599',
-      reason: 'Minimum RAM for local LLMs'
-    }
+    { name: 'NVIDIA RTX 3060 12GB', asin: 'B09K1F2K2P', price: '₹34,900', reason: 'Best value GPU for local AI & Stable Diffusion' },
+    { name: 'AMD Ryzen 9 5900X', asin: 'B08164VTWH', price: '₹31,469', reason: 'Excellent CPU for AI workloads & multitasking' },
+    { name: 'Corsair 32GB DDR4 RAM', asin: 'B081XWLQKS', price: '₹23,599', reason: 'Minimum RAM for local LLMs' },
   ];
 
-  const AFFILIATE_TAG = 'agenticedge-21'; // replace with YOUR tag
+  // Map countries to Amazon domain + tag
+  const amazonMap = {
+    IN: { domain: 'amazon.in', tag: 'agenticedge-21' },
+    US: { domain: 'amazon.com', tag: 'usagenticedge-20' },
+    UK: { domain: 'amazon.co.uk', tag: 'amkvin-21' },
+    CA: { domain: 'amazon.ca', tag: 'usagenticedge-20' },
+    DE: { domain: 'amazon.de', tag: 'usagenticedge-20' },
+    FR: { domain: 'amazon.fr', tag: 'usagenticedge-20' },
+    IT: { domain: 'amazon.it', tag: 'usagenticedge-20' },
+    ES: { domain: 'amazon.es', tag: 'usagenticedge-20' },
+    NL: { domain: 'amazon.nl', tag: 'usagenticedge-20' },
+  };
+
+  const getLink = (asin) => {
+    const { domain, tag } = amazonMap[country] || amazonMap.US;
+    return `https://${domain}/dp/${asin}/?tag=${tag}`;
+  };
 
   return (
     <section style={{ maxWidth: '1200px', margin: '60px auto', padding: '0 20px' }}>
       <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>
-        🔥 Recommended AI Hardware (India)
+        🔥 Recommended AI Hardware
       </h2>
 
       <div style={{ display: 'grid', gap: '30px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
@@ -43,7 +44,7 @@ export default function AffiliateModule() {
             <p style={{ fontWeight: 'bold' }}>{p.price}</p>
 
             <a
-              href={`https://www.amazon.in/dp/${p.asin}/?tag=${AFFILIATE_TAG}`}
+              href={getLink(p.asin)}
               target="_blank"
               rel="nofollow sponsored noopener"
               style={{
@@ -62,7 +63,10 @@ export default function AffiliateModule() {
           </div>
         ))}
       </div>
+
+      <p style={{ marginTop: '30px', textAlign: 'center', fontSize: '0.9rem', color: '#666' }}>
+        As an Amazon Associate, we earn from qualifying purchases.
+      </p>
     </section>
   );
 }
-As an Amazon Associate, we earn from qualifying purchases.
