@@ -65,3 +65,4 @@ export default function AffiliateModule() {
     </section>
   );
 }
+As an Amazon Associate, we earn from qualifying purchases.
