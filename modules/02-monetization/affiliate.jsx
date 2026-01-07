@@ -1,14 +1,26 @@
 'use client';
 
-export default function AffiliateModule({ country }) {
-  const products = [
+import React from 'react';
+
+interface Product {
+  name: string;
+  asin: string;
+  price: string;
+  reason: string;
+}
+
+interface AffiliateModuleProps {
+  country: string;
+}
+
+const AffiliateModule: React.FC<AffiliateModuleProps> = ({ country }) => {
+  const products: Product[] = [
     { name: 'NVIDIA RTX 3060 12GB', asin: 'B09K1F2K2P', price: '₹34,900', reason: 'Best value GPU for local AI & Stable Diffusion' },
     { name: 'AMD Ryzen 9 5900X', asin: 'B08164VTWH', price: '₹31,469', reason: 'Excellent CPU for AI workloads & multitasking' },
     { name: 'Corsair 32GB DDR4 RAM', asin: 'B081XWLQKS', price: '₹23,599', reason: 'Minimum RAM for local LLMs' },
   ];
 
-  // Map countries to Amazon domain + tag
-  const amazonMap = {
+  const amazonMap: Record<string, { domain: string; tag: string }> = {
     IN: { domain: 'amazon.in', tag: 'agenticedge-21' },
     US: { domain: 'amazon.com', tag: 'usagenticedge-20' },
     UK: { domain: 'amazon.co.uk', tag: 'amkvin-21' },
@@ -20,16 +32,14 @@ export default function AffiliateModule({ country }) {
     NL: { domain: 'amazon.nl', tag: 'usagenticedge-20' },
   };
 
-  const getLink = (asin) => {
+  const getLink = (asin: string) => {
     const { domain, tag } = amazonMap[country] || amazonMap.US;
     return `https://${domain}/dp/${asin}/?tag=${tag}`;
   };
 
   return (
     <section style={{ maxWidth: '1200px', margin: '60px auto', padding: '0 20px' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>
-        🔥 Recommended AI Hardware
-      </h2>
+      <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>🔥 Recommended AI Hardware</h2>
 
       <div style={{ display: 'grid', gap: '30px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
         {products.map((p) => (
@@ -69,4 +79,6 @@ export default function AffiliateModule({ country }) {
       </p>
     </section>
   );
-}
+};
+
+export default AffiliateModule;
