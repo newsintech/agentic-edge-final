@@ -1,33 +1,35 @@
+import ModuleLoader from '../components/ModuleLoader';
+
 export default function Home() {
   return (
-    <div style={{ 
-      maxWidth: '1200px', 
-      margin: '0 auto', 
-      padding: '20px',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    }}>
-      <h1>🚀 AgenticEdge - AI Hardware Hub</h1>
-      <p>Real-world benchmarks for local AI hardware and privacy computing.</p>
+    <main>
+      {/* Module 1: Hero - If fails, shows fallback */}
+      <ModuleLoader 
+        moduleName="01-hero/hero.jsx"
+        fallback={
+          <div style={{
+            background: '#000428',
+            color: 'white',
+            padding: '100px 20px',
+            textAlign: 'center'
+          }}>
+            <h1>AgenticEdge</h1>
+            <p>AI Hardware & Privacy Computing</p>
+          </div>
+        }
+      />
       
-      <div style={{ 
-        border: '2px solid green', 
-        padding: '20px', 
-        margin: '20px 0',
-        borderRadius: '10px'
-      }}>
-        <h2>💰 Monetization Section</h2>
-        <p>Affiliate links will appear here...</p>
+      {/* Module 2: Monetization - Will add later */}
+      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+        <h2>💰 Monetization Module Coming Soon</h2>
+        <p>Affiliate products will appear here</p>
       </div>
       
-      <div style={{ 
-        border: '2px solid blue', 
-        padding: '20px', 
-        margin: '20px 0',
-        borderRadius: '10px'
-      }}>
-        <h2>🖥️ Hardware Benchmarks</h2>
-        <p>GPU comparisons will be here...</p>
+      {/* Module 3: Benchmarks - Will add later */}
+      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+        <h2>⚡ Benchmarks Module Coming Soon</h2>
+        <p>Hardware performance tables will appear here</p>
       </div>
-    </div>
+    </main>
   );
 }
