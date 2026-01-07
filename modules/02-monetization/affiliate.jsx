@@ -5,19 +5,19 @@ export default function AffiliateModule() {
     {
       name: 'NVIDIA RTX 3060 12GB',
       asin: 'B09K1F2K2P',
-      price: '₹27,999',
+      price: '₹34,900',
       reason: 'Best value GPU for local AI & Stable Diffusion'
     },
     {
       name: 'AMD Ryzen 9 5900X',
       asin: 'B08164VTWH',
-      price: '₹29,499',
+      price: '₹31,469',
       reason: 'Excellent CPU for AI workloads & multitasking'
     },
     {
       name: 'Corsair 32GB DDR4 RAM',
       asin: 'B081XWLQKS',
-      price: '₹7,999',
+      price: '₹23,599',
       reason: 'Minimum RAM for local LLMs'
     }
   ];
