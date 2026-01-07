@@ -1,25 +1,20 @@
-// app/page.tsx
 import ModuleLoader from '../components/ModuleLoader';
 import { detectCountryFromIP } from '../lib/geo';
-import React from 'react';
 
-export default async function Home({}) {
-  // Server-side: detect country
-  const country = detectCountryFromIP(); // we’ll read IP from headers below
+export default async function Home() {
+  const country = detectCountryFromIP();
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif' }}>
-      {/* HERO MODULE */}
-      <ModuleLoader 
-        moduleName="01-hero/hero.tsx"
-        fallback={<div style={{ padding: '100px 20px', textAlign: 'center' }}>Loading Hero...</div>}
+      <ModuleLoader
+        moduleName="01-hero/hero"
+        fallback={<div style={{ padding: 100, textAlign: 'center' }}>Loading hero…</div>}
       />
 
-      {/* AFFILIATE MODULE */}
-      <ModuleLoader 
-        moduleName="affiliate.tsx"
+      <ModuleLoader
+        moduleName="affiliate"
         moduleProps={{ country }}
-        fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Loading affiliate products...</div>}
+        fallback={<div style={{ padding: 50, textAlign: 'center' }}>Loading deals…</div>}
       />
     </div>
   );
