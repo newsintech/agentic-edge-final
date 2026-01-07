@@ -14,7 +14,7 @@ export default function MonetizationModule() {
       price: "$599",
       originalPrice: "$699",
       discount: "14%",
-      affiliateLink: "https://www.amazon.com/AMD-Ryzen-7950X-16-Core-Processor/dp/B0C4N5PJVC?tag=" + YOUR_AFFILIATE_TAG, // Fixed link
+      affiliateLink: "https://www.amazon.com/AMD-Ryzen-7950X-16-Core-Processor/dp/B0C4N5PJVC?tag=" + agenticedge-20, // Fixed link
       image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
       rating: 4.8,
       features: ["16 Cores", "5.7GHz Boost", "AI Acceleration"],
@@ -28,7 +28,7 @@ export default function MonetizationModule() {
       price: "$1,599",
       originalPrice: "$1,999",
       discount: "20%",
-      affiliateLink: "https://www.amazon.com/NVIDIA-RTX-4090-Graphics-Card/dp/B0CHHZ8V2T?tag=" + YOUR_AFFILIATE_TAG, // Fixed link
+      affiliateLink: "https://www.amazon.com/NVIDIA-RTX-4090-Graphics-Card/dp/B0CHHZ8V2T?tag=" + agenticedge-20, // Fixed link
       image: "https://images.unsplash.com/photo-1591470426680-86c82e5cb3c3?w=400&h=300&fit=crop",
       rating: 4.9,
       features: ["24GB GDDR6X", "DLSS 3", "4K AI Rendering"],
@@ -42,7 +42,7 @@ export default function MonetizationModule() {
       price: "$1,699",
       originalPrice: "$1,899",
       discount: "11%",
-      affiliateLink: "https://www.amazon.com/Framework-Laptop-16-Gaming-Notebook/dp/B0C5J8BQ8G?tag=" + YOUR_AFFILIATE_TAG, // Fixed link
+      affiliateLink: "https://www.amazon.com/Framework-Laptop-16-Gaming-Notebook/dp/B0C5J8BQ8G?tag=" + agenticedge-20, // Fixed link
       image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
       rating: 4.7,
       features: ["Upgradeable", "Privacy Screens", "Open Source BIOS"],
