@@ -1,13 +1,12 @@
-import { GetServerSideProps } from 'next';
+// app/page.tsx
 import ModuleLoader from '../components/ModuleLoader';
 import { detectCountryFromIP } from '../lib/geo';
 import React from 'react';
 
-interface HomeProps {
-  country: string;
-}
+export default async function Home({}) {
+  // Server-side: detect country
+  const country = detectCountryFromIP(); // we’ll read IP from headers below
 
-const Home: React.FC<HomeProps> = ({ country }) => {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif' }}>
       {/* HERO MODULE */}
@@ -24,14 +23,4 @@ const Home: React.FC<HomeProps> = ({ country }) => {
       />
     </div>
   );
-};
-
-export default Home;
-
-// Server-side IP detection
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const country = detectCountryFromIP(req as any);
-  return {
-    props: { country },
-  };
-};
+}
