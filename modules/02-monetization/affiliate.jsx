@@ -2,65 +2,119 @@
 
 import { useState, useEffect } from 'react';
 
-// Your Amazon OneLink tag (should handle all regions automatically)
-const AMAZON_AFFILIATE_TAG = 'agenticedge-20';
+// Your current tracking IDs from the screenshot
+const AFFILIATE_TAGS = {
+  US: 'usagenticedge-20',      // From your screenshot
+  UK: 'amkvin-21',            // From your screenshot
+  IN: 'agenticedge-21'        // From your screenshot
+};
+
+// Function to detect user region and get appropriate link
+function getAmazonLink(asin) {
+  if (typeof window === 'undefined') {
+    // Default during server-side rendering
+    return `https://www.amazon.com/dp/${asin}?tag=${AFFILIATE_TAGS.US}`;
+  }
+  
+  // Detect user region
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const language = navigator.language || navigator.userLanguage;
+  
+  let region = 'US';
+  let domain = 'amazon.com';
+  let tag = AFFILIATE_TAGS.US;
+  
+  // Check for UK
+  if (timezone.includes("Europe/London") || language.includes('en-GB')) {
+    region = 'UK';
+    domain = 'amazon.co.uk';
+    tag = AFFILIATE_TAGS.UK;
+  }
+  // Check for India
+  else if (timezone.includes("Asia/Kolkata") || language.includes('en-IN') || language.includes('hi')) {
+    region = 'IN';
+    domain = 'amazon.in';
+    tag = AFFILIATE_TAGS.IN;
+  }
+  
+  // Return link with correct domain and tag
+  return `https://www.${domain}/dp/${asin}?tag=${tag}`;
+}
 
 export default function MonetizationModule() {
-  const [products] = useState([
-    {
-      id: 1,
-      name: "AMD Ryzen 9 7950X",
-      category: "CPU",
-      price: "$599",
-      originalPrice: "$699",
-      discount: "14%",
-      affiliateLink: "https://www.amazon.com/dp/B0C4N5PJVC?tag=" + AMAZON_AFFILIATE_TAG, // Simple concatenation
-      image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
-      rating: 4.8,
-      features: ["16 Cores", "5.7GHz Boost", "AI Acceleration"],
-      badge: "Editor's Choice",
-      description: "Top-tier CPU for local AI model training and privacy-preserving computation."
-    },
-    {
-      id: 2,
-      name: "NVIDIA RTX 4090",
-      category: "GPU",
-      price: "$1,599",
-      originalPrice: "$1,999",
-      discount: "20%",
-      affiliateLink: "https://www.amazon.com/dp/B0CHHZ8V2T?tag=" + AMAZON_AFFILIATE_TAG,
-      image: "https://images.unsplash.com/photo-1591470426680-86c82e5cb3c3?w=400&h=300&fit=crop",
-      rating: 4.9,
-      features: ["24GB GDDR6X", "DLSS 3", "4K AI Rendering"],
-      badge: "Benchmark Leader",
-      description: "Ultimate GPU for offline AI workloads and confidential computing."
-    },
-    {
-      id: 3,
-      name: "Framework Laptop 16",
-      category: "Laptop",
-      price: "$1,699",
-      originalPrice: "$1,899",
-      discount: "11%",
-      affiliateLink: "https://www.amazon.com/dp/B0C5J8BQ8G?tag=" + AMAZON_AFFILIATE_TAG,
-      image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
-      rating: 4.7,
-      features: ["Upgradeable", "Privacy Screens", "Open Source BIOS"],
-      badge: "Privacy Focused",
-      description: "Repairable laptop with hardware kill switches for maximum privacy."
-    }
-  ]);
-
+  const [products, setProducts] = useState([]);
   const [communitySupport, setCommunitySupport] = useState(0);
+  const [userRegion, setUserRegion] = useState('Detecting...');
+
+  useEffect(() => {
+    // Detect region on component mount
+    if (typeof window !== 'undefined') {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      if (timezone.includes("Europe/London")) setUserRegion('UK');
+      else if (timezone.includes("Asia/Kolkata")) setUserRegion('India');
+      else setUserRegion('US');
+    }
+    
+    // Initialize products with correct links
+    const initialProducts = [
+      {
+        id: 1,
+        name: "AMD Ryzen 9 7950X",
+        category: "CPU",
+        price: "$599",
+        originalPrice: "$699",
+        discount: "14%",
+        asin: "B0C4N5PJVC",
+        image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
+        rating: 4.8,
+        features: ["16 Cores", "5.7GHz Boost", "AI Acceleration"],
+        badge: "Editor's Choice",
+        description: "Top-tier CPU for local AI model training and privacy-preserving computation."
+      },
+      {
+        id: 2,
+        name: "NVIDIA RTX 4090",
+        category: "GPU",
+        price: "$1,599",
+        originalPrice: "$1,999",
+        discount: "20%",
+        asin: "B0CHHZ8V2T",
+        image: "https://images.unsplash.com/photo-1591470426680-86c82e5cb3c3?w=400&h=300&fit=crop",
+        rating: 4.9,
+        features: ["24GB GDDR6X", "DLSS 3", "4K AI Rendering"],
+        badge: "Benchmark Leader",
+        description: "Ultimate GPU for offline AI workloads and confidential computing."
+      },
+      {
+        id: 3,
+        name: "Framework Laptop 16",
+        category: "Laptop",
+        price: "$1,699",
+        originalPrice: "$1,899",
+        discount: "11%",
+        asin: "B0C5J8BQ8G",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
+        rating: 4.7,
+        features: ["Upgradeable", "Privacy Screens", "Open Source BIOS"],
+        badge: "Privacy Focused",
+        description: "Repairable laptop with hardware kill switches for maximum privacy."
+      }
+    ];
+    
+    // Add affiliate links based on user region
+    const productsWithLinks = initialProducts.map(product => ({
+      ...product,
+      affiliateLink: getAmazonLink(product.asin)
+    }));
+    
+    setProducts(productsWithLinks);
+  }, []);
 
   const trackSupport = (productName) => {
     setCommunitySupport(prev => prev + 1);
     console.log(`Product viewed: ${productName} - Supporting independent testing`);
   };
-
-  useEffect(() => {
-    trackSupport('Module Loaded');
-  }, []);
 
   return (
     <section style={{
@@ -69,6 +123,7 @@ export default function MonetizationModule() {
       position: 'relative',
       color: '#e6f1ff'
     }}>
+      {/* Subtle Background Pattern */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -80,6 +135,7 @@ export default function MonetizationModule() {
         opacity: 0.5
       }}></div>
       
+      {/* Header */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto 60px',
@@ -98,8 +154,8 @@ export default function MonetizationModule() {
           fontSize: '0.95rem',
           fontWeight: '500'
         }}>
-          <span style={{ color: '#64ffda' }}>🔒</span>
-          <span>Independently Tested Hardware</span>
+          <span style={{ color: '#64ffda' }}>🌍</span>
+          <span>Auto-Detected Region: {userRegion}</span>
         </div>
         
         <h2 style={{
@@ -126,6 +182,7 @@ export default function MonetizationModule() {
           <strong style={{ color: '#4091ff' }}> privacy research</strong>.
         </p>
         
+        {/* Region Info Banner */}
         <div style={{
           background: 'rgba(17, 34, 64, 0.7)',
           backdropFilter: 'blur(10px)',
@@ -133,51 +190,31 @@ export default function MonetizationModule() {
           borderRadius: '15px',
           padding: '20px',
           margin: '40px auto',
-          maxWidth: '600px',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto 1fr',
-          alignItems: 'center',
-          gap: '30px'
+          maxWidth: '800px'
         }}>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{
-              fontSize: '1.1rem',
-              color: '#64ffda',
-              fontWeight: '600'
-            }}>Independent Testing</div>
-            <div style={{ fontSize: '0.9rem', color: '#8892b0' }}>
-              No manufacturer influence
-            </div>
-          </div>
-          
           <div style={{
-            width: '60px',
-            height: '60px',
-            background: 'linear-gradient(135deg, #0a192f, #112240)',
-            border: '2px solid rgba(100, 255, 218, 0.3)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.2rem',
-            color: '#64ffda'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '20px',
+            textAlign: 'center'
           }}>
-            ⚡
-          </div>
-          
-          <div style={{ textAlign: 'left' }}>
-            <div style={{
-              fontSize: '1.1rem',
-              color: '#64ffda',
-              fontWeight: '600'
-            }}>Community Supported</div>
-            <div style={{ fontSize: '0.9rem', color: '#8892b0' }}>
-              {communitySupport}+ hardware tests funded
+            <div>
+              <div style={{ color: '#64ffda', fontSize: '1.1rem', fontWeight: '600' }}>United States</div>
+              <div style={{ fontSize: '0.9rem', color: '#8892b0' }}>Tag: usagenticedge-20</div>
+            </div>
+            <div>
+              <div style={{ color: '#64ffda', fontSize: '1.1rem', fontWeight: '600' }}>United Kingdom</div>
+              <div style={{ fontSize: '0.9rem', color: '#8892b0' }}>Tag: amkvin-21</div>
+            </div>
+            <div>
+              <div style={{ color: '#64ffda', fontSize: '1.1rem', fontWeight: '600' }}>India</div>
+              <div style={{ fontSize: '0.9rem', color: '#8892b0' }}>Tag: agenticedge-21</div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Products Grid */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
@@ -197,6 +234,7 @@ export default function MonetizationModule() {
           }}
           onMouseEnter={() => trackSupport(product.name)}>
             
+            {/* Badge */}
             {product.badge && (
               <div style={{
                 position: 'absolute',
@@ -217,6 +255,7 @@ export default function MonetizationModule() {
               </div>
             )}
             
+            {/* Product Image Area */}
             <div style={{
               height: '220px',
               background: 'linear-gradient(135deg, #0a192f, #112240)',
@@ -255,6 +294,7 @@ export default function MonetizationModule() {
               </div>
             </div>
             
+            {/* Product Info */}
             <div style={{ padding: '30px' }}>
               <div style={{ marginBottom: '20px' }}>
                 <div style={{
@@ -286,6 +326,7 @@ export default function MonetizationModule() {
                 </p>
               </div>
               
+              {/* Features */}
               <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -306,6 +347,7 @@ export default function MonetizationModule() {
                 ))}
               </div>
               
+              {/* Price & Action */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -351,11 +393,12 @@ export default function MonetizationModule() {
                     cursor: 'pointer'
                   }}
                 >
-                  <span>View Details</span>
+                  <span>Buy Now</span>
                   <span style={{ fontSize: '1.1rem' }}>↗</span>
                 </a>
               </div>
               
+              {/* Region Note */}
               <div style={{
                 fontSize: '0.8rem',
                 color: '#8892b0',
@@ -365,121 +408,36 @@ export default function MonetizationModule() {
                 borderRadius: '8px',
                 borderLeft: '3px solid rgba(64, 145, 255, 0.5)'
               }}>
-                <strong>Note:</strong> Links support independent testing. Amazon OneLink automatically redirects to your local store.
+                <strong>Auto-redirect:</strong> Based on your location ({userRegion}), this link will take you to your local Amazon store.
               </div>
             </div>
           </div>
         ))}
       </div>
       
-      <div style={{
-        maxWidth: '900px',
-        margin: '80px auto 0',
-        background: 'rgba(17, 34, 64, 0.7)',
-        backdropFilter: 'blur(10px)',
-        borderRadius: '20px',
-        padding: '40px',
-        border: '1px solid rgba(64, 145, 255, 0.3)'
-      }}>
-        <h3 style={{
-          textAlign: 'center',
-          fontSize: '1.8rem',
-          fontWeight: '700',
-          color: '#e6f1ff',
-          marginBottom: '30px'
-        }}>
-          Our Testing Methodology
-        </h3>
-        
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '30px'
-        }}>
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <div style={{
-              width: '70px',
-              height: '70px',
-              background: 'linear-gradient(135deg, #0a192f, #112240)',
-              border: '2px solid rgba(100, 255, 218, 0.3)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 20px',
-              fontSize: '1.8rem',
-              color: '#64ffda'
-            }}>
-              🔍
-            </div>
-            <h4 style={{ margin: '0 0 15px 0', color: '#e6f1ff' }}>Independent Benchmarks</h4>
-            <p style={{ fontSize: '0.95rem', color: '#a8b2d1', lineHeight: '1.6' }}>
-              All hardware tested in our lab with reproducible, open-source tools.
-            </p>
-          </div>
-          
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <div style={{
-              width: '70px',
-              height: '70px',
-              background: 'linear-gradient(135deg, #0a192f, #112240)',
-              border: '2px solid rgba(64, 145, 255, 0.3)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 20px',
-              fontSize: '1.8rem',
-              color: '#4091ff'
-            }}>
-              🛡️
-            </div>
-            <h4 style={{ margin: '0 0 15px 0', color: '#e6f1ff' }}>Privacy-First Focus</h4>
-            <p style={{ fontSize: '0.95rem', color: '#a8b2d1', lineHeight: '1.6' }}>
-              We prioritize hardware with local processing capabilities and security features.
-            </p>
-          </div>
-          
-          <div style={{ textAlign: 'center', padding: '20px' }}>
-            <div style={{
-              width: '70px',
-              height: '70px',
-              background: 'linear-gradient(135deg, #0a192f, #112240)',
-              border: '2px solid rgba(255, 107, 107, 0.3)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 20px',
-              fontSize: '1.8rem',
-              color: '#ff6b6b'
-            }}>
-              ⚡
-            </div>
-            <h4 style={{ margin: '0 0 15px 0', color: '#e6f1ff' }}>Real-World Performance</h4>
-            <p style={{ fontSize: '0.95rem', color: '#a8b2d1', lineHeight: '1.6' }}>
-              Testing focused on actual AI workloads, not synthetic benchmarks.
-            </p>
-          </div>
-        </div>
-      </div>
-      
+      {/* Fix Recommendation */}
       <div style={{
         maxWidth: '800px',
-        margin: '50px auto 0',
+        margin: '80px auto 0',
         padding: '25px',
-        background: 'rgba(17, 34, 64, 0.5)',
-        border: '1px solid rgba(64, 145, 255, 0.2)',
+        background: 'rgba(17, 34, 64, 0.7)',
+        border: '1px solid rgba(255, 107, 107, 0.3)',
         borderRadius: '15px',
         fontSize: '0.9rem',
         color: '#a8b2d1',
         lineHeight: '1.6'
       }}>
+        <h4 style={{ color: '#ff6b6b', margin: '0 0 15px 0' }}>
+          ⚠️ Important: Fix Your Amazon OneLink Setup
+        </h4>
         <p style={{ margin: '0 0 15px 0' }}>
-          <strong style={{ color: '#64ffda' }}>Amazon OneLink Active:</strong> Your link will automatically redirect users to their local Amazon store (US, UK, IN, etc.) when clicked.
+          <strong>Current Issue:</strong> You're using different tracking IDs for each country. This requires manual redirection.
+        </p>
+        <p style={{ margin: '0 0 15px 0' }}>
+          <strong>Recommended Fix:</strong> Set up Amazon OneLink to use the SAME tracking ID (<code>agenticedge-20</code>) for all countries.
         </p>
         <p style={{ margin: '0', fontSize: '0.85rem', color: '#8892b0' }}>
-          Using Amazon OneLink tag: <code style={{background: 'rgba(100, 255, 218, 0.1)', padding: '2px 6px', borderRadius: '4px'}}>agenticedge-20</code>
+          Go to Amazon Associates → Account Settings → OneLink Settings → "Use same tracking ID for all stores"
         </p>
       </div>
     </section>
