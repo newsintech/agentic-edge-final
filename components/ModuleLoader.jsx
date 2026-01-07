@@ -1,47 +1,60 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ModuleLoader({ moduleName, fallback = null }) {
   const [Module, setModule] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Dynamically import module - if fails, show fallback
-    import(`../modules/${moduleName}`)
-      .then(module => {
+    // Try to load the module
+    const loadModule = async () => {
+      try {
+        // Dynamic import - if module doesn't exist, it throws error
+        const module = await import(`../modules/${moduleName}`);
         setModule(() => module.default);
-      })
-      .catch(err => {
-        console.warn(`Module ${moduleName} failed to load:`, err);
+      } catch (err) {
+        console.log(`Module ${moduleName} failed to load (safe):`, err.message);
         setError(true);
-      });
+      }
+    };
+
+    loadModule();
   }, [moduleName]);
 
+  // If error, show fallback
   if (error) {
-    return fallback || <div style={{
-      border: '2px dashed #ff4444',
-      padding: '20px',
-      borderRadius: '10px',
-      background: '#fff5f5',
-      color: '#ff4444',
-      textAlign: 'center'
-    }}>
-      ⚠️ Module temporarily unavailable
-    </div>;
+    return fallback || (
+      <div style={{
+        border: '2px dashed #ff6b6b',
+        padding: '40px',
+        borderRadius: '10px',
+        background: '#fff5f5',
+        color: '#ff4444',
+        textAlign: 'center',
+        margin: '20px 0'
+      }}>
+        ⚠️ Module temporarily unavailable
+      </div>
+    );
   }
 
+  // If still loading, show loading state
   if (!Module) {
-    return fallback || <div style={{
-      border: '2px dashed #ddd',
-      padding: '20px',
-      borderRadius: '10px',
-      background: '#f9f9f9',
-      textAlign: 'center'
-    }}>
-      Loading module...
-    </div>;
+    return fallback || (
+      <div style={{
+        border: '2px dashed #ddd',
+        padding: '40px',
+        borderRadius: '10px',
+        background: '#f9f9f9',
+        textAlign: 'center',
+        margin: '20px 0'
+      }}>
+        Loading module...
+      </div>
+    );
   }
 
+  // Render the module
   return <Module />;
 }
