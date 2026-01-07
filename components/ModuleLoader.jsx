@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-export default function ModuleLoader({ moduleName, fallback }) {
+export default function ModuleLoader({ moduleName, fallback, moduleProps = {} }) {
   const DynamicModule = dynamic(
     () => import(`../modules/${moduleName}`),
     {
@@ -11,5 +11,5 @@ export default function ModuleLoader({ moduleName, fallback }) {
     }
   );
 
-  return <DynamicModule />;
+  return <DynamicModule {...moduleProps} />;
 }
