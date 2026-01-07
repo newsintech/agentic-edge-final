@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 
-// Your Amazon affiliate tag
-const YOUR_AFFILIATE_TAG = 'agenticedge-20'; // Replace with your actual Amazon Associates tag when approved
+// Your Amazon OneLink tag (should handle all regions automatically)
+const AMAZON_AFFILIATE_TAG = 'agenticedge-20';
 
 export default function MonetizationModule() {
-  const [products, setProducts] = useState([
+  const [products] = useState([
     {
       id: 1,
       name: "AMD Ryzen 9 7950X",
@@ -14,7 +14,7 @@ export default function MonetizationModule() {
       price: "$599",
       originalPrice: "$699",
       discount: "14%",
-      affiliateLink: "https://www.amazon.com/AMD-Ryzen-7950X-16-Core-Processor/dp/B0C4N5PJVC?tag=" + agenticedge-20, // Fixed link
+      affiliateLink: "https://www.amazon.com/dp/B0C4N5PJVC?tag=" + AMAZON_AFFILIATE_TAG, // Simple concatenation
       image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
       rating: 4.8,
       features: ["16 Cores", "5.7GHz Boost", "AI Acceleration"],
@@ -28,7 +28,7 @@ export default function MonetizationModule() {
       price: "$1,599",
       originalPrice: "$1,999",
       discount: "20%",
-      affiliateLink: "https://www.amazon.com/NVIDIA-RTX-4090-Graphics-Card/dp/B0CHHZ8V2T?tag=" + agenticedge-20, // Fixed link
+      affiliateLink: "https://www.amazon.com/dp/B0CHHZ8V2T?tag=" + AMAZON_AFFILIATE_TAG,
       image: "https://images.unsplash.com/photo-1591470426680-86c82e5cb3c3?w=400&h=300&fit=crop",
       rating: 4.9,
       features: ["24GB GDDR6X", "DLSS 3", "4K AI Rendering"],
@@ -42,7 +42,7 @@ export default function MonetizationModule() {
       price: "$1,699",
       originalPrice: "$1,899",
       discount: "11%",
-      affiliateLink: "https://www.amazon.com/Framework-Laptop-16-Gaming-Notebook/dp/B0C5J8BQ8G?tag=" + agenticedge-20, // Fixed link
+      affiliateLink: "https://www.amazon.com/dp/B0C5J8BQ8G?tag=" + AMAZON_AFFILIATE_TAG,
       image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop",
       rating: 4.7,
       features: ["Upgradeable", "Privacy Screens", "Open Source BIOS"],
@@ -53,11 +53,8 @@ export default function MonetizationModule() {
 
   const [communitySupport, setCommunitySupport] = useState(0);
 
-  // Track community support clicks
   const trackSupport = (productName) => {
     setCommunitySupport(prev => prev + 1);
-    
-    // Privacy-friendly analytics (no tracking of personal data)
     console.log(`Product viewed: ${productName} - Supporting independent testing`);
   };
 
@@ -72,7 +69,6 @@ export default function MonetizationModule() {
       position: 'relative',
       color: '#e6f1ff'
     }}>
-      {/* Subtle Background Pattern */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -84,7 +80,6 @@ export default function MonetizationModule() {
         opacity: 0.5
       }}></div>
       
-      {/* Header */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto 60px',
@@ -131,7 +126,6 @@ export default function MonetizationModule() {
           <strong style={{ color: '#4091ff' }}> privacy research</strong>.
         </p>
         
-        {/* Community Support Indicator */}
         <div style={{
           background: 'rgba(17, 34, 64, 0.7)',
           backdropFilter: 'blur(10px)',
@@ -184,7 +178,6 @@ export default function MonetizationModule() {
         </div>
       </div>
 
-      {/* Products Grid - Privacy Focused */}
       <div style={{
         maxWidth: '1200px',
         margin: '0 auto',
@@ -202,19 +195,8 @@ export default function MonetizationModule() {
             transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
             position: 'relative'
           }}
-          onMouseOver={e => {
-            e.currentTarget.style.transform = 'translateY(-8px)';
-            e.currentTarget.style.borderColor = 'rgba(100, 255, 218, 0.4)';
-            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.borderColor = 'rgba(64, 145, 255, 0.2)';
-            e.currentTarget.style.boxShadow = 'none';
-          }}
           onMouseEnter={() => trackSupport(product.name)}>
             
-            {/* Badge */}
             {product.badge && (
               <div style={{
                 position: 'absolute',
@@ -235,7 +217,6 @@ export default function MonetizationModule() {
               </div>
             )}
             
-            {/* Product Image Area */}
             <div style={{
               height: '220px',
               background: 'linear-gradient(135deg, #0a192f, #112240)',
@@ -245,7 +226,6 @@ export default function MonetizationModule() {
               position: 'relative',
               borderBottom: '1px solid rgba(64, 145, 255, 0.2)'
             }}>
-              {/* Tech Pattern Background */}
               <div style={{
                 position: 'absolute',
                 top: 0,
@@ -256,7 +236,6 @@ export default function MonetizationModule() {
                 opacity: 0.5
               }}></div>
               
-              {/* Icon */}
               <div style={{
                 width: '120px',
                 height: '120px',
@@ -276,7 +255,6 @@ export default function MonetizationModule() {
               </div>
             </div>
             
-            {/* Product Info */}
             <div style={{ padding: '30px' }}>
               <div style={{ marginBottom: '20px' }}>
                 <div style={{
@@ -308,7 +286,6 @@ export default function MonetizationModule() {
                 </p>
               </div>
               
-              {/* Features */}
               <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -329,7 +306,6 @@ export default function MonetizationModule() {
                 ))}
               </div>
               
-              {/* Price & Action */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -355,7 +331,6 @@ export default function MonetizationModule() {
                   </div>
                 </div>
                 
-                {/* View Details Button */}
                 <a
                   href={product.affiliateLink}
                   target="_blank"
@@ -375,23 +350,12 @@ export default function MonetizationModule() {
                     transition: 'all 0.3s',
                     cursor: 'pointer'
                   }}
-                  onMouseOver={e => {
-                    e.currentTarget.style.background = 'rgba(100, 255, 218, 0.1)';
-                    e.currentTarget.style.borderColor = '#64ffda';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseOut={e => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.borderColor = 'rgba(100, 255, 218, 0.4)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
                 >
                   <span>View Details</span>
                   <span style={{ fontSize: '1.1rem' }}>↗</span>
                 </a>
               </div>
               
-              {/* Privacy Note */}
               <div style={{
                 fontSize: '0.8rem',
                 color: '#8892b0',
@@ -401,14 +365,13 @@ export default function MonetizationModule() {
                 borderRadius: '8px',
                 borderLeft: '3px solid rgba(64, 145, 255, 0.5)'
               }}>
-                <strong>Note:</strong> Links support independent testing. No tracking, no cookies.
+                <strong>Note:</strong> Links support independent testing. Amazon OneLink automatically redirects to your local store.
               </div>
             </div>
           </div>
         ))}
       </div>
       
-      {/* Value Proposition */}
       <div style={{
         maxWidth: '900px',
         margin: '80px auto 0',
@@ -501,7 +464,6 @@ export default function MonetizationModule() {
         </div>
       </div>
       
-      {/* Transparent Disclosure */}
       <div style={{
         maxWidth: '800px',
         margin: '50px auto 0',
@@ -514,12 +476,10 @@ export default function MonetizationModule() {
         lineHeight: '1.6'
       }}>
         <p style={{ margin: '0 0 15px 0' }}>
-          <strong style={{ color: '#64ffda' }}>Transparency Note:</strong> We participate in affiliate programs to fund 
-          our independent testing lab. When you use these links, you support our work at no additional cost. 
-          We never accept payment for reviews or rankings.
+          <strong style={{ color: '#64ffda' }}>Amazon OneLink Active:</strong> Your link will automatically redirect users to their local Amazon store (US, UK, IN, etc.) when clicked.
         </p>
         <p style={{ margin: '0', fontSize: '0.85rem', color: '#8892b0' }}>
-          All testing data is publicly available. No tracking cookies are used on this site.
+          Using Amazon OneLink tag: <code style={{background: 'rgba(100, 255, 218, 0.1)', padding: '2px 6px', borderRadius: '4px'}}>agenticedge-20</code>
         </p>
       </div>
     </section>
