@@ -3,15 +3,14 @@
 import { useEffect, useState } from 'react'
 
 export interface AffiliateLink {
-  productName: string;
-  in?: string;
-  us?: string;
-  gb?: string;
-  ca?: string;
-  de?: string;
-  default: string;
+  productName: string
+  in?: string
+  us?: string
+  gb?: string
+  ca?: string
+  de?: string
+  default: string
 }
-
 
 interface GeoAffiliateProps {
   products: AffiliateLink[]
@@ -23,13 +22,14 @@ export default function GeoAffiliate({ products, className = '' }: GeoAffiliateP
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const detect = async () => {
+    const detectCountry = async () => {
       try {
         const res = await fetch('https://www.cloudflare.com/cdn-cgi/trace')
         const txt = await res.text()
         const match = txt.match(/loc=([A-Z]{2})/)
         if (match) setUserCountry(match[1])
       } catch {
+        // fallback based on timezone
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
         if (tz.includes('Kolkata')) setUserCountry('IN')
         else if (tz.includes('London')) setUserCountry('GB')
@@ -39,18 +39,25 @@ export default function GeoAffiliate({ products, className = '' }: GeoAffiliateP
         setLoading(false)
       }
     }
-    detect()
+    detectCountry()
   }, [])
 
-  const getLink = (p: AffiliateLink) => {
-    const map: Record<string, keyof AffiliateLink> = {
-      US: 'us',
-      IN: 'in',
-      GB: 'gb',
-      CA: 'ca',
-      DE: 'de'
+  // SAFE fallback link function
+  const getAffiliateLink = (product: AffiliateLink) => {
+    switch (userCountry) {
+      case 'IN':
+        return product.in || product.default
+      case 'US':
+        return product.us || product.default
+      case 'GB':
+        return product.gb || product.default
+      case 'CA':
+        return product.ca || product.default
+      case 'DE':
+        return product.de || product.default
+      default:
+        return product.default
     }
-    return p[map[userCountry]] || p.default
   }
 
   if (loading) {
@@ -59,13 +66,13 @@ export default function GeoAffiliate({ products, className = '' }: GeoAffiliateP
 
   return (
     <div className={`space-y-4 ${className}`}>
-      {products.map((p, i) => (
+      {products.map((product, idx) => (
         <div
-          key={i}
-          onClick={() => window.open(getLink(p), '_blank', 'noopener,noreferrer')}
+          key={idx}
+          onClick={() => window.open(getAffiliateLink(product), '_blank', 'noopener,noreferrer')}
           className="border rounded-lg p-4 hover:border-orange-500 hover:shadow-lg cursor-pointer bg-white"
         >
-          <h3 className="font-semibold text-lg">{p.productName}</h3>
+          <h3 className="font-semibold text-lg">{product.productName}</h3>
           <p className="text-sm text-gray-500 mt-1">
             🌍 Local Amazon store ({userCountry})
           </p>
