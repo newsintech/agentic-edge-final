@@ -1,6 +1,4 @@
-export default function Page() {
-  return (
-    export const metadata = {
+export const metadata = {
   title: 'Best GPUs for Stable Diffusion (2025) – India & USA',
   description:
     'Best GPU for Stable Diffusion in 2025. RTX 4060 Ti vs 4070 vs 4090. VRAM-focused buying guide for India and USA.',
@@ -67,15 +65,13 @@ export default function BestGPUPage() {
         </ul>
       </section>
 
-      {/* PLACEHOLDER FOR AFFILIATE (STEP B) */}
+      {/* AFFILIATE SLOT (NEXT STEP) */}
       <section>
         <h2>Check Live Prices (India & USA)</h2>
         <p>
-          Prices and availability vary heavily by region.
-          We automatically show the correct Amazon store below.
+          Prices and availability vary by region.
+          We automatically show the correct Amazon store next.
         </p>
-
-        {/* GeoAffiliate will be injected here in Step B */}
       </section>
     </main>
   );
