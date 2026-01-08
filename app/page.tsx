@@ -3,7 +3,7 @@ import ModuleLoader from "@/components/ModuleLoader";
 export default function Home() {
   return (
     <main>
-      <ModuleLoader />
+      <ModuleLoader modules={['01-hero/hero']} />
     </main>
   );
 }
