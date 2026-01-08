@@ -6,29 +6,39 @@ export const metadata = {
     'Best GPU for Stable Diffusion in 2025. RTX 4060 Ti vs 4070 vs 4090. VRAM-focused buying guide for India and USA.',
 };
 
-// 🔐 Client-only import (prevents build & routing issues)
+// Client-only import (prevents build & routing issues)
 const GeoAffiliate = dynamic(() => import('@/modules/GeoAffiliate'), {
   ssr: false,
 });
 
 export default function BestGPUPage() {
+  // NOTE: All keys required by AffiliateLink interface are present: in, us, gb, ca, de, default
   const products = [
     {
       productName: 'RTX 4060 Ti (16GB)',
       in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK',
       us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK',
+      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK',
+      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK',
+      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK',
       default: 'https://www.amazon.com',
     },
     {
       productName: 'RTX 4070',
-      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK',
-      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK',
+      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK_2',
+      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_2',
+      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_2',
+      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_2',
+      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_2',
       default: 'https://www.amazon.com',
     },
     {
       productName: 'RTX 4090',
-      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK',
-      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK',
+      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK_3',
+      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_3',
+      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_3',
+      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_3',
+      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_3',
       default: 'https://www.amazon.com',
     },
   ];
@@ -92,14 +102,14 @@ export default function BestGPUPage() {
         </ul>
       </section>
 
-      {/* 💰 MONEY SECTION */}
+      {/* MONEY SECTION */}
       <section>
         <h2>Check Live Prices (India & USA)</h2>
         <p style={{ color: '#555' }}>
           Prices vary by region. We automatically open the correct Amazon store.
         </p>
 
-        {/* 🔥 REVENUE BLOCK */}
+        {/* Revenue block — client component */}
         <GeoAffiliate products={products} />
       </section>
     </main>
