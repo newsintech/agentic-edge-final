@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from 'react'
 
-interface AffiliateLink {
-  productName: string
-  us: string
-  in: string
-  gb: string
-  ca: string
-  de: string
-  default: string
+export interface AffiliateLink {
+  productName: string;
+  in?: string;
+  us?: string;
+  gb?: string;
+  ca?: string;
+  de?: string;
+  default: string;
 }
+
 
 interface GeoAffiliateProps {
   products: AffiliateLink[]
