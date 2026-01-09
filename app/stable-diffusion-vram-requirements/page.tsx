@@ -191,13 +191,13 @@ function VRAMCard({
       </ul>
 
       {affiliate && (
-        <Link
-          href={affiliate}
-          className="inline-block text-sm bg-black text-white px-4 py-2 rounded-md hover:opacity-90 transition"
-        >
-          View Recommended GPU
-        </Link>
-      )}
-    </div>
-  );
-}
+  <a
+    href={affiliate}
+    target="_blank"
+    rel="nofollow sponsored noopener"
+    className="inline-block text-sm bg-black text-white px-4 py-2 rounded-md hover:opacity-90 transition"
+  >
+    View Recommended GPU
+  </a>
+)}
+
