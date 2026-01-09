@@ -17,7 +17,7 @@ export default function BestGPUPage() {
     {
       productName: 'RTX 4060 Ti (16GB)',
       in: 'https://amzn.to/4bpSVnD',
-      us: 'https://amzn.to/4aRUOJE',
+      us: 'https://amzn.to/3N9UnAI',
       uk: 'https://amzn.to/4sCvfTu',
       default: 'https://www.amazon.com',
     },
