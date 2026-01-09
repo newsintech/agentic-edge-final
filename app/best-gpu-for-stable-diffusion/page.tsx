@@ -1,14 +1,8 @@
-'use client';
+'use client'; // must be first line
+
 import React, { useEffect } from 'react';
-import { Metadata } from 'next';
 import { GPUs } from '@/modules/GPUData';
 import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
-
-export const metadata: Metadata = {
-  title: 'Stable Diffusion Compute Capability Engine',
-  description:
-    'Autonomous evaluation of GPUs for Stable Diffusion with VRAM, budget, and regional constraints.',
-};
 
 // ----- Capability evaluation logic -----
 type CapabilityScore = {
@@ -81,10 +75,6 @@ async function runInvisibleAGI(userRegion: string) {
     const data = await res.json();
     console.log('Invisible AGI recommendations:', data);
 
-    // Optional: you could trigger analytics or even auto-click (careful with auto-redirects)
-    // Example:
-    // if (data.affiliateUrl) window.open(data.affiliateUrl, '_blank');
-
   } catch (err) {
     console.error('AGI error:', err);
   }
@@ -100,7 +90,7 @@ export default function BestGPUPage() {
   useEffect(() => {
     runInvisibleAGI(userRegion);
 
-    // Optional: rerun AGI periodically for more intelligent tracking
+    // Optional: rerun AGI periodically
     const interval = setInterval(() => runInvisibleAGI(userRegion), 30000); // every 30s
     return () => clearInterval(interval);
   }, [userRegion]);
