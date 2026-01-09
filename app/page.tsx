@@ -2,7 +2,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { GPUs } from '../../modules/GPUData'; // structured GPU + VRAM + constraints
-import { GeoAffiliate } from '../../modules/GeoAffiliate'; // India-aware Amazon links
+import { GeoAffiliateHelper } from '../../modules/GeoAffiliateHelper'; // India-aware Amazon links
 
 export const metadata: Metadata = {
   title: 'Stable Diffusion Compute Capability Engine',
