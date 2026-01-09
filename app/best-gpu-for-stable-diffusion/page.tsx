@@ -5,6 +5,25 @@ export const metadata = {
   description:
     'Best GPU for Stable Diffusion in 2025. VRAM-focused buying guide for RTX 4060 Ti, RTX 4070, RTX 4090. India, USA & UK.',
 }
+<section style={{ marginBottom: 40 }}>
+  <h3>Recommended GPUs by Budget</h3>
+
+  <ul style={{ fontSize: 17, lineHeight: 1.8 }}>
+    <li>
+      <strong>Budget Pick:</strong> RTX 4060 Ti (16GB) — best entry GPU for Stable Diffusion
+    </li>
+    <li>
+      <strong>Value Pick:</strong> RTX 4070 — fastest GPU before diminishing returns
+    </li>
+    <li>
+      <strong>Pro Pick:</strong> RTX 4090 — zero compromises, 24GB VRAM
+    </li>
+  </ul>
+
+  <p style={{ color: '#555' }}>
+    👉 Click below to see <strong>current prices in your country</strong>.
+  </p>
+</section>
 
 const GeoAffiliate = dynamic(() => import('@/modules/GeoAffiliate'), {
   ssr: false,
