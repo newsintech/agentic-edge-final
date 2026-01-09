@@ -1,17 +1,10 @@
 'use client'; // MUST be first line
 
 import React, { useEffect } from 'react';
-import { Metadata } from 'next';
 import { GPUs } from '@/modules/GPUData';
 import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
 
-export const metadata: Metadata = {
-  title: 'Stable Diffusion Compute Capability Engine',
-  description:
-    'Autonomous evaluation of GPUs for Stable Diffusion with VRAM, budget, and regional constraints.',
-};
-
-// Capability evaluation logic
+// ----- Capability evaluation logic -----
 type CapabilityScore = {
   gpu: string;
   vram: number;
@@ -64,7 +57,7 @@ function evaluateGPU(
   };
 }
 
-// Invisible AGI logic
+// ----- Invisible AGI logic -----
 async function runInvisibleAGI(userRegion: string) {
   try {
     const event = {
@@ -81,13 +74,12 @@ async function runInvisibleAGI(userRegion: string) {
 
     const data = await res.json();
     console.log('Invisible AGI recommendations:', data);
-
   } catch (err) {
     console.error('AGI error:', err);
   }
 }
 
-// Page component
+// ----- Page component -----
 export default function BestGPUPage() {
   const userRegion = 'IN';
   const minVRAM = 10;
