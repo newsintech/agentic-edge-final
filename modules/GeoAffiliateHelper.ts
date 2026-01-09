@@ -7,9 +7,9 @@ export const GeoAffiliateHelper = {
       GB: 'https://www.amazon.co.uk/s?k=',
       CA: 'https://www.amazon.ca/s?k=',
       DE: 'https://www.amazon.de/s?k=',
-    };
-    const query = encodeURIComponent(gpuName);
-    const base = baseLinks[region] || baseLinks['US'];
-    return `${base}${query}&tag=yourAffiliateID`;
+    }
+    const query = encodeURIComponent(gpuName)
+    const base = baseLinks[region] || baseLinks['US']
+    return `${base}${query}&tag=yourAffiliateID`
   },
-};
+}
