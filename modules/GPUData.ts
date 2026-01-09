@@ -1,15 +1,15 @@
 // modules/GPUData.ts
-export interface GPU {
-  name: string
-  vram: number
-  price: number
-  regionSupport: string[]
-}
+export type GPU = {
+  id: string;
+  name: string;
+  vramGB: number;
+  tier?: 'budget'|'mid'|'high';
+  amazonASIN?: string; // optional affiliate identifier
+};
 
 export const GPUs: GPU[] = [
-  { name: 'NVIDIA RTX 4090', vram: 24, price: 260000, regionSupport: ['IN', 'US', 'EU'] },
-  { name: 'NVIDIA RTX 4080', vram: 16, price: 160000, regionSupport: ['IN', 'US', 'EU'] },
-  { name: 'NVIDIA RTX 4070 Ti', vram: 12, price: 120000, regionSupport: ['IN', 'US', 'EU'] },
-  { name: 'NVIDIA RTX 3060', vram: 12, price: 50000, regionSupport: ['IN', 'US', 'EU'] },
-  { name: 'AMD RX 7900 XTX', vram: 24, price: 180000, regionSupport: ['US', 'EU'] },
-]
+  { id: 'rtx3060', name: 'NVIDIA RTX 3060', vramGB: 12, tier: 'mid', amazonASIN: 'B08W8DGK3X' },
+  { id: 'rtx4070', name: 'NVIDIA RTX 4070', vramGB: 12, tier: 'high', amazonASIN: 'B0B5Z6....' },
+  { id: 'rx7600',  name: 'AMD RX 7600',   vramGB: 8,  tier: 'budget', amazonASIN: 'B0XXXX' },
+  // add more as needed
+];
