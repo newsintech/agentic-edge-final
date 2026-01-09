@@ -1,8 +1,10 @@
 import { GPUs, GPU } from './GPUData';
-import { GeoAffiliateHelper } from './GeoAffiliateHelper';
+import { GeoAffiliateHelper, Region } from './GeoAffiliateHelper';
+
+/* ---------- Types ---------- */
 
 export type UserProfile = {
-  region: string;
+  region: Region; // ✅ FIXED: was string
   budget: number;
   minVRAM: number;
 };
@@ -18,6 +20,8 @@ export type GPTDecision = {
   assumptions: string[];
   affiliateLink?: string;
 };
+
+/* ---------- Engine ---------- */
 
 export function runGPTEngine(profile: UserProfile): GPTDecision[] {
   const now = new Date().toISOString();
