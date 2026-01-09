@@ -1,10 +1,10 @@
-'use client'; // must be first line
+'use client';
 
 import React, { useEffect } from 'react';
-import { GPUs } from '@/modules/GPUData';
+import { GPUs, GPU } from '@/modules/GPUData';
 import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
 
-// ----- Capability evaluation logic -----
+// ----- Capability evaluation types -----
 type CapabilityScore = {
   gpu: string;
   vram: number;
@@ -15,8 +15,9 @@ type CapabilityScore = {
   assumptions: string[];
 };
 
+// ----- GPU evaluation logic -----
 function evaluateGPU(
-  gpu: { name: string; vram: number; price: number; regionSupport: string[] },
+  gpu: GPU,
   userRegion: string,
   minVRAM: number,
   budget: number
@@ -74,28 +75,25 @@ async function runInvisibleAGI(userRegion: string) {
 
     const data = await res.json();
     console.log('Invisible AGI recommendations:', data);
-
   } catch (err) {
     console.error('AGI error:', err);
   }
 }
 
-// ----- React component -----
+// ----- React Component -----
 export default function BestGPUPage() {
-  const userRegion = 'IN'; // Adjust automatically if desired
+  const userRegion = 'IN'; // can adjust dynamically later
   const minVRAM = 10; // GB
   const budget = 80000; // INR
 
-  // Run invisible AGI on page load
+  // Run invisible AGI in background
   useEffect(() => {
     runInvisibleAGI(userRegion);
-
-    // Optional: rerun AGI periodically
     const interval = setInterval(() => runInvisibleAGI(userRegion), 30000); // every 30s
     return () => clearInterval(interval);
   }, [userRegion]);
 
-  // Evaluate GPUs for display
+  // Evaluate GPUs
   const evaluations: CapabilityScore[] = GPUs.map((gpu) =>
     evaluateGPU(gpu, userRegion, minVRAM, budget)
   );
