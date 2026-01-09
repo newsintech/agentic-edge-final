@@ -1,27 +1,26 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   darkMode: "class",
   content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./modules/**/*.{ts,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./modules/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
         // AGI Neutral Palette
-        bg: "#0b0d10",           // graphite black
-        surface: "#111418",      // primary surface
-        surfaceSoft: "#161a20",  // secondary surface
+        bg: "#0b0d10",
+        surface: "#111418",
+        surfaceSoft: "#161a20",
         borderSoft: "#1f2430",
 
         textPrimary: "#e6e8eb",
         textSecondary: "#a3a8b3",
         textMuted: "#6b7280",
 
-        // Intelligence Accent (used sparingly)
-        intelligence: "#6ee7ff", // soft cyan
+        // Intelligence Accent (use sparingly)
+        intelligence: "#6ee7ff",
         warning: "#fbbf24",
         danger: "#f87171",
       },
@@ -59,5 +58,3 @@ const config: Config = {
   },
   plugins: [],
 };
-
-export default config;
