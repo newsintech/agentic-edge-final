@@ -21,9 +21,6 @@ export default function BestGPUPage() {
       in: 'https://amzn.to/4bpSVnD',
       us: 'https://amzn.to/4aRUOJE',
       uk: 'https://amzn.to/4sCvfTu',
-      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK',
-      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK',
-      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK',
       default: 'https://www.amazon.com',
     },
     {
@@ -31,9 +28,6 @@ export default function BestGPUPage() {
       in: 'https://amzn.to/4jPlRId',
       us: 'https://amzn.to/49rBsbY',
       uk: 'https://amzn.to/3Z2MjEj',
-      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_2',
-      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_2',
-      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_2',
       default: 'https://www.amazon.com',
     },
     {
@@ -41,9 +35,6 @@ export default function BestGPUPage() {
       in: 'https://amzn.to/4swtebg',
       us: 'https://amzn.to/4juPUEC',
       uk: 'https://amzn.to/4jt5r7S',
-      gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_3',
-      ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_3',
-      de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_3',
       default: 'https://www.amazon.com',
     },
   ];
