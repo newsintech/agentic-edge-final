@@ -54,7 +54,7 @@ export default function BestGPUPage() {
               "brand": "NVIDIA",
               "offers": {
                 "@type": "Offer",
-                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK",
+                "url": "https://amzn.to/3N9UnAI",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/InStock"
               }
@@ -68,7 +68,7 @@ export default function BestGPUPage() {
               "brand": "NVIDIA",
               "offers": {
                 "@type": "Offer",
-                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_2",
+                "url": "https://amzn.to/49rBsbY",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/InStock"
               }
@@ -82,7 +82,7 @@ export default function BestGPUPage() {
               "brand": "NVIDIA",
               "offers": {
                 "@type": "Offer",
-                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_3",
+                "url": "https://amzn.to/4juPUEC",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/InStock"
               }
