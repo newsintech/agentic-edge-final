@@ -1,41 +1,42 @@
-// app/api/agi/route.ts
 import { NextResponse } from 'next/server';
-import { GPUs } from '@/modules/GPUData';
+import { GPUs, GPU } from '@/modules/GPUData';
 import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
 
-// Simple "invisible AGI" logic
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { event, region = 'DEFAULT' } = await request.json();
+    const body = await req.json();
+    const { event, region } = body;
 
-    // event.type could be 'page_view', 'click', 'scroll', etc.
-    // event.data can include page info, GPU interest, etc.
+    let recommendedGPU: GPU | null = null;
 
-    // Decide what to recommend based on event type
-    let recommendedGPU = GPUs[0]; // default
-    if (event.page === 'stable-diffusion') {
-      // Example rule: if user wants SDXL models, pick high VRAM GPU
-      const desiredVRAM = event.data?.desiredVRAM || 12;
-      recommendedGPU = GPUs.find(g => g.vramGB >= desiredVRAM) || GPUs[0];
-    }
+    // Desired VRAM coming from invisible AGI signal
+    const desiredVRAM: number = event?.data?.desiredVRAM ?? 12;
 
-    // Prepare invisible affiliate link
+    // Pick first GPU that satisfies VRAM requirement
+    recommendedGPU =
+      GPUs.find((g) => g.vram >= desiredVRAM && g.regionSupport.includes(region)) ??
+      GPUs[0];
+
     const affiliateUrl = GeoAffiliateHelper.getAffiliateUrlForASIN(
-      recommendedGPU.amazonASIN,
-      region as any
-    ) || GeoAffiliateHelper.getFallbackSearchUrl(recommendedGPU.name, region as any);
+      recommendedGPU.name,
+      region
+    );
 
-    // Response can include instructions for the frontend or analytics
-    const reply = {
-      recommendedGPU: recommendedGPU.name,
+    return NextResponse.json({
+      ok: true,
+      reasoning: {
+        desiredVRAM,
+        selectedGPU: recommendedGPU.name,
+        vram: recommendedGPU.vram,
+        region,
+      },
       affiliateUrl,
-      message: `AGI suggests ${recommendedGPU.name} for your workload.`
-    };
-
-    return NextResponse.json(reply);
-
-  } catch (err: any) {
-    console.error('AGI API error:', err);
-    return NextResponse.json({ error: 'AGI failed' }, { status: 500 });
+    });
+  } catch (error) {
+    console.error('AGI route error:', error);
+    return NextResponse.json(
+      { ok: false, error: 'AGI processing failed' },
+      { status: 500 }
+    );
   }
 }
