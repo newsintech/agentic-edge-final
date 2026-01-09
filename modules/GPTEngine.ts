@@ -1,103 +1,67 @@
-// modules/GPTEngine.ts
-import { GPUs } from './GPUData'
-import { GeoAffiliateHelper } from './GeoAffiliateHelper'
+import { GPUs, GPU } from './GPUData';
+import { GeoAffiliateHelper } from './GeoAffiliateHelper';
 
-// Optional: add privacy/security tools
-export interface PrivacyTool {
-  name: string
-  affiliateLink?: string
-}
-
-export const PrivacyTools: PrivacyTool[] = [
-  { name: 'ProtonVPN', affiliateLink: 'https://protonvpn.com?affiliate=yourID' },
-  { name: 'NordVPN', affiliateLink: 'https://nordvpn.com?affiliate=yourID' },
-  { name: 'Tails OS', affiliateLink: undefined },
-]
-
-// Define user profile
 export type UserProfile = {
-  region: string
-  minVRAM?: number
-  budget?: number
-  interests?: 'AI Hardware' | 'Privacy Tools' | 'Local AI'
-}
+  region: string;
+  budget: number;
+  minVRAM: number;
+};
 
-// Define evaluation result
-export type EvaluationResult = {
-  name: string
-  type: 'GPU' | 'PrivacyTool'
-  decision: 'Suitable' | 'Unsuitable' | 'Wait' | 'UnsupportedRegion'
-  score: number // 0-100
-  confidence: number // 0-100%
-  lastEvaluated: string
-  assumptions: string[]
-  affiliateLink?: string
-}
+export type GPTDecision = {
+  gpu: string;
+  vram: number;
+  price: number;
+  score: number;
+  decision: 'Suitable' | 'Too Low VRAM' | 'Over Budget' | 'Unsupported Region';
+  confidence: number;
+  lastEvaluated: string;
+  assumptions: string[];
+  affiliateLink?: string;
+};
 
-// Core invisible GPT evaluation engine
-export async function evaluateProfile(profile: UserProfile): Promise<EvaluationResult[]> {
-  const now = new Date().toISOString()
-  const results: EvaluationResult[] = []
+export function runGPTEngine(profile: UserProfile): GPTDecision[] {
+  const now = new Date().toISOString();
 
-  // Evaluate GPUs
-  GPUs.forEach((gpu) => {
-    let decision: EvaluationResult['decision']
-    const assumptions: string[] = []
+  return GPUs.map((gpu: GPU) => {
+    const assumptions: string[] = [];
+    let decision: GPTDecision['decision'] = 'Suitable';
 
-    // Check region availability
     if (!gpu.regionSupport.includes(profile.region)) {
-      decision = 'UnsupportedRegion'
-      assumptions.push(`GPU not available in ${profile.region}`)
-    }
-    // Check VRAM requirement
-    else if (profile.minVRAM && gpu.vram < profile.minVRAM) {
-      decision = 'Unsuitable'
-      assumptions.push(`VRAM below minimum of ${profile.minVRAM}GB`)
-    }
-    // Check budget
-    else if (profile.budget && gpu.price > profile.budget) {
-      decision = 'Unsuitable'
-      assumptions.push(`Price above budget of ₹${profile.budget}`)
-    }
-    // All constraints satisfied
-    else {
-      decision = 'Suitable'
-      assumptions.push('All constraints satisfied')
+      decision = 'Unsupported Region';
+      assumptions.push(`Not available in ${profile.region}`);
+    } else if (gpu.vram < profile.minVRAM) {
+      decision = 'Too Low VRAM';
+      assumptions.push(`Requires at least ${profile.minVRAM}GB VRAM`);
+    } else if (gpu.price > profile.budget) {
+      decision = 'Over Budget';
+      assumptions.push(`Budget limit is ₹${profile.budget}`);
+    } else {
+      assumptions.push('All constraints satisfied');
     }
 
-    // Map decision to score/confidence
-    const scoreMap: Record<EvaluationResult['decision'], number> = {
+    const scoreMap: Record<GPTDecision['decision'], number> = {
       Suitable: 95,
-      Unsuitable: 40,
-      Wait: 60,
-      UnsupportedRegion: 20,
-    }
+      'Too Low VRAM': 40,
+      'Over Budget': 55,
+      'Unsupported Region': 20,
+    };
 
-    results.push({
-      name: gpu.name,
-      type: 'GPU',
-      decision,
+    return {
+      gpu: gpu.name,
+      vram: gpu.vram,
+      price: gpu.price,
       score: scoreMap[decision],
+      decision,
       confidence: scoreMap[decision],
       lastEvaluated: now,
       assumptions,
-      affiliateLink: decision === 'Suitable' ? GeoAffiliateHelper.getLink(gpu.name, profile.region) : undefined,
-    })
-  })
-
-  // Evaluate Privacy Tools
-  PrivacyTools.forEach((tool) => {
-    results.push({
-      name: tool.name,
-      type: 'PrivacyTool',
-      decision: 'Suitable',
-      score: 90,
-      confidence: 90,
-      lastEvaluated: now,
-      assumptions: ['Reputable, privacy-first tool'],
-      affiliateLink: tool.affiliateLink || undefined,
-    })
-  })
-
-  return results
+      affiliateLink:
+        decision === 'Suitable'
+          ? GeoAffiliateHelper.getAffiliateUrlForASIN(
+              gpu.name,
+              profile.region
+            )
+          : undefined,
+    };
+  }).sort((a, b) => b.score - a.score);
 }
