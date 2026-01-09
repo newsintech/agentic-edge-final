@@ -1,105 +1,107 @@
-export const metadata = {
-  title: 'AgenticEdge – AI Hardware, Local AI & Privacy Computing',
-  description:
-    'Independent benchmarks, buying guides, and real-world analysis of AI hardware, local AI tools, and privacy-first computing.',
+// app/best-gpu-for-stable-diffusion/page.tsx
+import React from 'react';
+import { Metadata } from 'next';
+import { GPUs } from '../../modules/GPUData'; // structured GPU + VRAM + constraints
+import { GeoAffiliate } from '../../modules/GeoAffiliate'; // India-aware Amazon links
+
+export const metadata: Metadata = {
+  title: 'Stable Diffusion Compute Capability Engine',
+  description: 'Autonomous evaluation of GPUs for Stable Diffusion with VRAM, budget, and regional constraints.',
+};
+
+type CapabilityScore = {
+  gpu: string;
+  vram: number;
+  score: number;
+  decision: 'Suitable' | 'Too Low VRAM' | 'Over Budget' | 'Unsupported Region';
+  confidence: number; // 0-100%
+  lastEvaluated: string;
+  assumptions: string[];
+};
+
+function evaluateGPU(gpu: { name: string; vram: number; price: number; regionSupport: string[] }, userRegion: string, minVRAM: number, budget: number): CapabilityScore {
+  const now = new Date().toISOString();
+  let decision: CapabilityScore['decision'];
+  const assumptions: string[] = [];
+
+  // Constraint: region
+  if (!gpu.regionSupport.includes(userRegion)) {
+    decision = 'Unsupported Region';
+    assumptions.push(`GPU not officially available in ${userRegion}`);
+  }
+  // Constraint: VRAM
+  else if (gpu.vram < minVRAM) {
+    decision = 'Too Low VRAM';
+    assumptions.push(`Minimum VRAM required is ${minVRAM}GB`);
+  }
+  // Constraint: budget
+  else if (gpu.price > budget) {
+    decision = 'Over Budget';
+    assumptions.push(`User budget is ₹${budget}`);
+  } else {
+    decision = 'Suitable';
+    assumptions.push('All constraints satisfied');
+  }
+
+  // Compute a confidence score
+  let score = 0;
+  switch (decision) {
+    case 'Suitable': score = 95; break;
+    case 'Too Low VRAM': score = 40; break;
+    case 'Over Budget': score = 50; break;
+    case 'Unsupported Region': score = 20; break;
+  }
+
+  return {
+    gpu: gpu.name,
+    vram: gpu.vram,
+    score,
+    decision,
+    confidence: score,
+    lastEvaluated: now,
+    assumptions,
+  };
 }
 
-export default function HomePage() {
+export default function BestGPUPage() {
+  const userRegion = 'IN'; // India-aware
+  const minVRAM = 10; // GB
+  const budget = 80000; // INR
+
+  const evaluations: CapabilityScore[] = GPUs.map((gpu) =>
+    evaluateGPU(gpu, userRegion, minVRAM, budget)
+  );
+
+  // Sort by score descending
+  evaluations.sort((a, b) => b.score - a.score);
+
   return (
-    <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px' }}>
+    <main style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
+      <h1>Stable Diffusion Compute Capability Engine</h1>
+      <p>
+        This page autonomously evaluates GPUs for Stable Diffusion based on VRAM, budget, and regional availability. It does not recommend products outside your constraints.
+      </p>
 
-      {/* ================= HERO ================= */}
-      <section style={{ marginBottom: 80 }}>
-        <h1>AgenticEdge</h1>
-        <h2 style={{ fontWeight: 400 }}>
-          AI Hardware · Local AI · Privacy-First Computing
-        </h2>
-        <p style={{ fontSize: 18, maxWidth: 800 }}>
-          AgenticEdge provides independent, real-world benchmarks and buying
-          guides for running AI models locally — without cloud lock-in.
-        </p>
-      </section>
-
-      {/* ================= TRUST / EXPERTISE ================= */}
-      <section style={{ marginBottom: 80 }}>
-        <h2>Why Trust AgenticEdge?</h2>
-        <ul>
-          <li>Hands-on testing of GPUs for Stable Diffusion & LLMs</li>
-          <li>Focus on VRAM, thermals, efficiency — not marketing hype</li>
-          <li>Privacy-first approach to AI computing</li>
-          <li>No sponsored rankings or paid placements</li>
-        </ul>
-      </section>
-
-      {/* ================= CORE TOPIC PILLARS ================= */}
-      <section style={{ marginBottom: 80 }}>
-        <h2>Core Topics We Cover</h2>
-
-        <div style={{ display: 'grid', gap: 30, gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
-
-          <div>
-            <h3>🧠 AI Hardware</h3>
-            <p>GPUs, CPUs, RAM, and system builds optimized for AI workloads.</p>
+      <section style={{ marginTop: '2rem' }}>
+        {evaluations.map((e) => (
+          <div key={e.gpu} style={{ marginBottom: '1.5rem', border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
+            <h2>{e.gpu}</h2>
+            <p>VRAM: {e.vram}GB</p>
+            <p>Score: {e.score}/100</p>
+            <p>Decision: <strong>{e.decision}</strong></p>
+            <p>Confidence: {e.confidence}%</p>
+            <p>Last Evaluated: {e.lastEvaluated}</p>
+            <p>Assumptions: {e.assumptions.join('; ')}</p>
+            {e.decision === 'Suitable' && (
+              <p>
+                <a href={GeoAffiliate.getLink(e.gpu, userRegion)} target="_blank" rel="noopener noreferrer">
+                  Buy / Check Price
+                </a>
+              </p>
+            )}
           </div>
-
-          <div>
-            <h3>🎨 Stable Diffusion</h3>
-            <p>Real-world GPU performance, VRAM limits, and model compatibility.</p>
-          </div>
-
-          <div>
-            <h3>🤖 Local LLMs</h3>
-            <p>Running LLMs locally using consumer and workstation hardware.</p>
-          </div>
-
-          <div>
-            <h3>🔒 Privacy Computing</h3>
-            <p>Local-first tools that avoid cloud tracking and data leakage.</p>
-          </div>
-
-        </div>
+        ))}
       </section>
-
-      {/* ================= FLAGSHIP GUIDES ================= */}
-      <section style={{ marginBottom: 80 }}>
-        <h2>Flagship Guides</h2>
-
-        <ul>
-          <li>
-            <a href="/best-gpu-for-stable-diffusion">
-              Best GPU for Stable Diffusion (2025)
-            </a>
-          </li>
-          <li>
-            Best Budget AI PC Build (Coming Soon)
-          </li>
-          <li>
-            Local LLM Hardware Requirements (Coming Soon)
-          </li>
-        </ul>
-      </section>
-
-      {/* ================= WHO THIS IS FOR ================= */}
-      <section style={{ marginBottom: 80 }}>
-        <h2>Who AgenticEdge Is For</h2>
-        <ul>
-          <li>AI creators & researchers</li>
-          <li>Developers running models locally</li>
-          <li>Privacy-conscious users</li>
-          <li>Buyers who care about real performance</li>
-        </ul>
-      </section>
-
-      {/* ================= BRAND VISION ================= */}
-      <section>
-        <h2>Our Vision</h2>
-        <p style={{ maxWidth: 900 }}>
-          As AI becomes more powerful, running models locally will matter more
-          than ever. AgenticEdge exists to help users choose the right hardware,
-          stay private, and remain independent from cloud monopolies.
-        </p>
-      </section>
-
     </main>
-  )
+  );
 }
