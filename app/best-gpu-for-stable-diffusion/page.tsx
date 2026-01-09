@@ -1,3 +1,5 @@
+'use client'
+
 import dynamic from 'next/dynamic';
 
 export const metadata = {
@@ -16,8 +18,9 @@ export default function BestGPUPage() {
   const products = [
     {
       productName: 'RTX 4060 Ti (16GB)',
-      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK',
-      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK',
+      in: 'https://amzn.to/4bpSVnD',
+      us: 'https://amzn.to/4aRUOJE',
+      uk: 'https://amzn.to/4sCvfTu',
       gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK',
       ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK',
       de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK',
@@ -25,8 +28,9 @@ export default function BestGPUPage() {
     },
     {
       productName: 'RTX 4070',
-      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK_2',
-      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_2',
+      in: 'https://amzn.to/4jPlRId',
+      us: 'https://amzn.to/49rBsbY',
+      uk: 'https://amzn.to/3Z2MjEj',
       gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_2',
       ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_2',
       de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_2',
@@ -34,8 +38,9 @@ export default function BestGPUPage() {
     },
     {
       productName: 'RTX 4090',
-      in: 'https://www.amazon.in/dp/REPLACE_WITH_YOUR_IN_LINK_3',
-      us: 'https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_3',
+      in: 'https://amzn.to/4swtebg',
+      us: 'https://amzn.to/4juPUEC',
+      uk: 'https://amzn.to/4jt5r7S',
       gb: 'https://www.amazon.co.uk/dp/REPLACE_WITH_YOUR_GB_LINK_3',
       ca: 'https://www.amazon.ca/dp/REPLACE_WITH_YOUR_CA_LINK_3',
       de: 'https://www.amazon.de/dp/REPLACE_WITH_YOUR_DE_LINK_3',
@@ -45,6 +50,58 @@ export default function BestGPUPage() {
 
   return (
     <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px' }}>
+      
+      {/* --- STEP 1: PRODUCT SCHEMA JSON-LD --- */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": "RTX 4060 Ti (16GB)",
+              "image": "https://YOUR_SITE_URL/images/rtx4060ti.jpg",
+              "description": "Cheapest GPU that runs Stable Diffusion models comfortably.",
+              "brand": "NVIDIA",
+              "offers": {
+                "@type": "Offer",
+                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              }
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": "RTX 4070",
+              "image": "https://YOUR_SITE_URL/images/rtx4070.jpg",
+              "description": "Excellent speed, efficiency, and availability for AI workloads.",
+              "brand": "NVIDIA",
+              "offers": {
+                "@type": "Offer",
+                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_2",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              }
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": "RTX 4090",
+              "image": "https://YOUR_SITE_URL/images/rtx4090.jpg",
+              "description": "24GB VRAM GPU — perfect for professional AI image generation.",
+              "brand": "NVIDIA",
+              "offers": {
+                "@type": "Offer",
+                "url": "https://www.amazon.com/dp/REPLACE_WITH_YOUR_US_LINK_3",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              }
+            }
+          ])
+        }}
+      />
+
       {/* HERO */}
       <section style={{ marginBottom: 50 }}>
         <h1>Best GPUs for Stable Diffusion (2025)</h1>
