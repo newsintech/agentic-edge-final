@@ -1,10 +1,9 @@
-'use client'; // Must be first line
+'use client'; // MUST be first line
 
 import React, { useEffect } from 'react';
 import { GPUs } from '@/modules/GPUData';
 import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
 
-// Capability evaluation logic
 type CapabilityScore = {
   gpu: string;
   vram: number;
@@ -79,7 +78,6 @@ async function runInvisibleAGI(userRegion: string) {
   }
 }
 
-// Page component
 export default function BestGPUPage() {
   const userRegion = 'IN';
   const minVRAM = 10;
