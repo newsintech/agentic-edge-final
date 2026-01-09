@@ -168,17 +168,19 @@ export default function StableDiffusionVRAMRequirements() {
 /* ============================
    SAFE VRAM CARD COMPONENT
 ============================ */
+type VRAMCardProps = {
+  title: string;
+  description: string;
+  points: string[];
+  affiliate?: string;
+};
+
 function VRAMCard({
   title,
   description,
   points,
   affiliate,
-}: {
-  title: string;
-  description: string;
-  points: string[];
-  affiliate?: string;
-}) {
+}: VRAMCardProps) {
   return (
     <div className="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
@@ -191,13 +193,15 @@ function VRAMCard({
       </ul>
 
       {affiliate && (
-  <a
-    href={affiliate}
-    target="_blank"
-    rel="nofollow sponsored noopener"
-    className="inline-block text-sm bg-black text-white px-4 py-2 rounded-md hover:opacity-90 transition"
-  >
-    View Recommended GPU
-  </a>
-)}
-
+        <a
+          href={affiliate}
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          className="inline-block text-sm bg-black text-white px-4 py-2 rounded-md hover:opacity-90 transition"
+        >
+          View Recommended GPU
+        </a>
+      )}
+    </div>
+  );
+}
