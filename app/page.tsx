@@ -1,20 +1,23 @@
-// app/best-gpu-for-stable-diffusion/page.tsx
-import React from 'react';
+'use client'; // MUST be first line
+
+import React, { useEffect } from 'react';
 import { Metadata } from 'next';
-import { GPUs } from '../../modules/GPUData';
-import { GeoAffiliateHelper } from '../../modules/GeoAffiliateHelper';
+import { GPUs } from '@/modules/GPUData';
+import { GeoAffiliateHelper } from '@/modules/GeoAffiliateHelper';
 
 export const metadata: Metadata = {
   title: 'Stable Diffusion Compute Capability Engine',
-  description: 'Autonomous evaluation of GPUs for Stable Diffusion with VRAM, budget, and regional constraints.',
+  description:
+    'Autonomous evaluation of GPUs for Stable Diffusion with VRAM, budget, and regional constraints.',
 };
 
+// Capability evaluation logic
 type CapabilityScore = {
   gpu: string;
   vram: number;
   score: number;
   decision: 'Suitable' | 'Too Low VRAM' | 'Over Budget' | 'Unsupported Region';
-  confidence: number; // 0-100%
+  confidence: number;
   lastEvaluated: string;
   assumptions: string[];
 };
@@ -26,8 +29,8 @@ function evaluateGPU(
   budget: number
 ): CapabilityScore {
   const now = new Date().toISOString();
-  let decision: CapabilityScore['decision'];
   const assumptions: string[] = [];
+  let decision: CapabilityScore['decision'];
 
   if (!gpu.regionSupport.includes(userRegion)) {
     decision = 'Unsupported Region';
@@ -61,10 +64,40 @@ function evaluateGPU(
   };
 }
 
+// Invisible AGI logic
+async function runInvisibleAGI(userRegion: string) {
+  try {
+    const event = {
+      type: 'page_view',
+      page: '/best-gpu-for-stable-diffusion',
+      data: { desiredVRAM: 12 },
+    };
+
+    const res = await fetch('/api/agi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event, region: userRegion }),
+    });
+
+    const data = await res.json();
+    console.log('Invisible AGI recommendations:', data);
+
+  } catch (err) {
+    console.error('AGI error:', err);
+  }
+}
+
+// Page component
 export default function BestGPUPage() {
-  const userRegion = 'IN'; // India-aware
-  const minVRAM = 10; // GB
-  const budget = 80000; // INR
+  const userRegion = 'IN';
+  const minVRAM = 10;
+  const budget = 80000;
+
+  useEffect(() => {
+    runInvisibleAGI(userRegion);
+    const interval = setInterval(() => runInvisibleAGI(userRegion), 30000);
+    return () => clearInterval(interval);
+  }, [userRegion]);
 
   const evaluations: CapabilityScore[] = GPUs.map((gpu) =>
     evaluateGPU(gpu, userRegion, minVRAM, budget)
@@ -76,7 +109,8 @@ export default function BestGPUPage() {
     <main style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif' }}>
       <h1>Stable Diffusion Compute Capability Engine</h1>
       <p>
-        This page autonomously evaluates GPUs for Stable Diffusion based on VRAM, budget, and regional availability.
+        This page autonomously evaluates GPUs for Stable Diffusion based on VRAM,
+        budget, and regional availability. Invisible AGI runs in the background.
       </p>
 
       <section style={{ marginTop: '2rem' }}>
@@ -102,7 +136,7 @@ export default function BestGPUPage() {
             {e.decision === 'Suitable' && (
               <p>
                 <a
-                  href={GeoAffiliateHelper.getLink(e.gpu, userRegion)}
+                  href={GeoAffiliateHelper.getAffiliateUrlForASIN(e.gpu, userRegion)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
