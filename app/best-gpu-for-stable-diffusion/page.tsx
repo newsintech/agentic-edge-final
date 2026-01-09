@@ -177,10 +177,20 @@ export default function BestGPUPage() {
 
       {/* ===================== PRICES ===================== */}
       <section id="prices" style={{ marginTop: 60 }}>
-        <h2>Check Live Prices (Auto Geo-Detected)</h2>
-        <p>We automatically open the correct Amazon store for your region.</p>
-        <GeoAffiliate products={products} />
-      </section>
+  <h2>Check Live Prices (Auto Geo-Detected)</h2>
+  <p>
+    We automatically open the correct Amazon store for your region.
+  </p>
+
+  <GeoAffiliate products={products} />
+
+  {/* PRICE PSYCHOLOGY (BOOSTS CLICKS) */}
+  <p style={{ fontSize: 15, color: '#666', marginTop: 20 }}>
+    GPU prices fluctuate weekly due to supply and demand.
+    Checking live prices ensures you don’t overpay.
+  </p>
+</section>
+
 
       {/* ===================== FAQ ===================== */}
       <section id="faqs" style={{ marginTop: 60 }}>
