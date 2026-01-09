@@ -6,19 +6,11 @@ export const metadata = {
     'Best GPU for Stable Diffusion in 2025. VRAM-focused buying guide for RTX 4060 Ti, RTX 4070, RTX 4090. India, USA & UK.',
 }
 
-// Client-only component
 const GeoAffiliate = dynamic(() => import('@/modules/GeoAffiliate'), {
   ssr: false,
 })
 
 export default function BestGPUPage() {
-  /**
-   * ✅ ONLY COUNTRIES YOU HAVE AFFILIATE IDs FOR
-   * IN = India
-   * US = USA
-   * GB = United Kingdom
-   * default = fallback (USA = highest earnings)
-   */
   const products = [
     {
       productName: 'RTX 4060 Ti (16GB)',
@@ -46,6 +38,22 @@ export default function BestGPUPage() {
   return (
     <main style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px' }}>
 
+      {/* ================= JUMP NAVIGATION ================= */}
+      <nav
+        style={{
+          background: '#f5f5f5',
+          padding: '15px',
+          borderRadius: 8,
+          marginBottom: 40,
+        }}
+      >
+        <strong>Jump to:</strong>{' '}
+        <a href="#quick-picks">Quick Picks</a> ·{' '}
+        <a href="#buying-guide">Buying Guide</a> ·{' '}
+        <a href="#prices">Live Prices</a> ·{' '}
+        <a href="#faqs">FAQs</a>
+      </nav>
+
       {/* ================= PRODUCT SCHEMA ================= */}
       <script
         type="application/ld+json"
@@ -56,7 +64,7 @@ export default function BestGPUPage() {
               "@type": "Product",
               "name": "RTX 4060 Ti (16GB)",
               "brand": "NVIDIA",
-              "description": "Best budget GPU for Stable Diffusion with enough VRAM.",
+              "description": "Best budget GPU for Stable Diffusion.",
               "offers": {
                 "@type": "Offer",
                 "url": "https://amzn.to/3N9UnAI",
@@ -68,7 +76,7 @@ export default function BestGPUPage() {
               "@type": "Product",
               "name": "RTX 4070",
               "brand": "NVIDIA",
-              "description": "Best overall GPU for Stable Diffusion in 2025.",
+              "description": "Best overall GPU for Stable Diffusion.",
               "offers": {
                 "@type": "Offer",
                 "url": "https://amzn.to/49rBsbY",
@@ -80,7 +88,7 @@ export default function BestGPUPage() {
               "@type": "Product",
               "name": "RTX 4090",
               "brand": "NVIDIA",
-              "description": "24GB VRAM GPU for professional AI image generation.",
+              "description": "24GB VRAM GPU for professional AI workloads.",
               "offers": {
                 "@type": "Offer",
                 "url": "https://amzn.to/4juPUEC",
@@ -91,108 +99,57 @@ export default function BestGPUPage() {
         }}
       />
 
-      {/* ================= FAQ SCHEMA ================= */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "What GPU is best for Stable Diffusion?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "The RTX 4070 is the best overall GPU for Stable Diffusion in 2025. Professionals should choose the RTX 4090 for its 24GB VRAM."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How much VRAM do I need for Stable Diffusion?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "At least 12GB VRAM works, but 16GB VRAM is strongly recommended for Stable Diffusion XL and ControlNet."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can AMD GPUs run Stable Diffusion?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "AMD GPUs can run Stable Diffusion, but NVIDIA GPUs are recommended due to CUDA support and better ecosystem tools."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Is RTX 4060 Ti good for Stable Diffusion?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. The RTX 4060 Ti 16GB is the best budget GPU for Stable Diffusion without VRAM issues."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
-      {/* ================= CONTENT ================= */}
-      <section style={{ marginBottom: 50 }}>
-        <h1>Best GPUs for Stable Diffusion (2025)</h1>
-        <p style={{ fontSize: 18 }}>
-          Stable Diffusion is <strong>VRAM-bound</strong>. Choosing the wrong GPU
-          causes slow generations and memory errors.
-        </p>
-      </section>
-
-      <section style={{ marginBottom: 60 }}>
-        <h2>Quick Recommendations</h2>
-        <table border={1} cellPadding={12} width="100%">
-          <tbody>
-            <tr>
-              <td>Best Budget</td>
-              <td>RTX 4060 Ti (16GB)</td>
-            </tr>
-            <tr>
-              <td>Best Overall</td>
-              <td>RTX 4070</td>
-            </tr>
-            <tr>
-              <td>Best Professional</td>
-              <td>RTX 4090</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
+      {/* ================= HERO ================= */}
       <section>
-        <h2>Check Live Prices</h2>
-        <p style={{ color: '#555' }}>
-          We automatically open the correct Amazon store based on your country.
+        <h1>Best GPUs for Stable Diffusion (2025)</h1>
+        <p>
+          Stable Diffusion performance depends on VRAM more than raw GPU power.
+          These are the only GPUs worth buying in 2025.
         </p>
+      </section>
 
+      {/* ================= QUICK PICKS ================= */}
+      <section id="quick-picks" style={{ marginTop: 60 }}>
+        <h2>Quick Recommendations</h2>
+        <ul>
+          <li><strong>Best Budget:</strong> RTX 4060 Ti (16GB)</li>
+          <li><strong>Best Overall:</strong> RTX 4070</li>
+          <li><strong>Best Professional:</strong> RTX 4090</li>
+        </ul>
+      </section>
+
+      {/* ================= BUYING GUIDE ================= */}
+      <section id="buying-guide" style={{ marginTop: 60 }}>
+        <h2>What Actually Matters for Stable Diffusion</h2>
+        <ul>
+          <li>VRAM is more important than CUDA cores</li>
+          <li>16GB VRAM is the real minimum for SDXL</li>
+          <li>NVIDIA GPUs are strongly recommended</li>
+          <li>Efficiency matters for long AI workloads</li>
+        </ul>
+      </section>
+
+      {/* ================= PRICES ================= */}
+      <section id="prices" style={{ marginTop: 60 }}>
+        <h2>Check Live Prices (Auto Geo-Detected)</h2>
+        <p>
+          We automatically open the correct Amazon store for your country.
+        </p>
         <GeoAffiliate products={products} />
       </section>
 
-      {/* ================= FAQ (VISIBLE) ================= */}
-      <section style={{ marginTop: 60 }}>
+      {/* ================= FAQ ================= */}
+      <section id="faqs" style={{ marginTop: 60 }}>
         <h2>Frequently Asked Questions</h2>
 
         <h3>What GPU is best for Stable Diffusion?</h3>
-        <p>
-          The RTX 4070 offers the best balance of VRAM, performance, and power
-          efficiency for most users.
-        </p>
+        <p>The RTX 4070 is the best overall choice for most users.</p>
 
         <h3>How much VRAM do I need?</h3>
-        <p>
-          16GB VRAM is recommended for Stable Diffusion XL and advanced workflows.
-        </p>
+        <p>16GB VRAM is recommended for Stable Diffusion XL.</p>
 
         <h3>Can AMD GPUs run Stable Diffusion?</h3>
-        <p>
-          They can, but NVIDIA GPUs are strongly recommended due to CUDA support.
-        </p>
+        <p>They can, but NVIDIA GPUs are strongly recommended.</p>
       </section>
 
     </main>
