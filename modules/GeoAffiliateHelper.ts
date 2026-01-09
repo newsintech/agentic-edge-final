@@ -15,7 +15,7 @@ export function detectRegion(): Region {
 export function getAffiliateSearchUrl(
   keyword: string,
   region: Region
-) {
+): string {
   switch (region) {
     case 'IN':
       return `https://www.amazon.in/s?k=${encodeURIComponent(keyword)}`;
